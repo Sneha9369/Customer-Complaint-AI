@@ -1,15 +1,14 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 DB_CONFIG = {
-
-    "host": "localhost",
-
-    "user": "root",
-
-    "password": "sneha@1234singh",
-
-    "database": "customer_complaint_ai",
-
-    "port": 3306
+    "host": os.getenv("DB_HOST", "localhost"),
+    "user": os.getenv("DB_USER", "root"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME", "customer_complaint_ai"),
+    "port": int(os.getenv("DB_PORT", 3306))
 }
 
-
-SECRET_KEY = "customer-complaint-ai-secret-key-2026"
+SECRET_KEY = os.getenv("SECRET_KEY")
