@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Dashboard | SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body class="new-admin-body">
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="new-sidebar">
+
+        <div>
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('employee_dashboard') }}"
+               class="new-brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                <div>
+                    <strong>SmartComplaint</strong>
+                    <span>AI</span>
+                </div>
+
+            </a>
+
+
+            <!-- MAIN MENU -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    MAIN
+                </p>
+
+
+                <a href="{{ url_for('employee_dashboard') }}"
+                   class="sidebar-link active">
+
+                    <span class="side-icon">⌂</span>
+
+                    Dashboard
+
+                </a>
+
+
+                <a href="#assigned-complaints"
+                   class="sidebar-link">
+
+                    <span class="side-icon">☷</span>
+
+                    Assigned Complaints
+
+                </a>
+
+
+                <a href="#performance"
+                   class="sidebar-link">
+
+                    <span class="side-icon">▥</span>
+
+                    Performance
+
+                </a>
+
+            </div>
+
+
+            <!-- WORK -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    WORKSPACE
+                </p>
+
+
+                <a href="#assigned-complaints"
+                   class="sidebar-link">
+
+                    <span class="side-icon">✓</span>
+
+                    My Tasks
+
+                </a>
+
+
+                <a href="{{ url_for('home') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌂</span>
+
+                    Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+
+                <div class="help-icon">
+                    ?
+                </div>
+
+                <strong>
+                    Employee Portal
+                </strong>
+
+                <p>
+                    Review assigned complaints
+                    and update their progress.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="sidebar-link logout-link">
+
+                <span class="side-icon">
+                    ←
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="new-admin-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="new-topbar">
+
+
+            <!-- SEARCH -->
+
+            <div class="top-search">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="employeeSearch"
+                    placeholder="Search assigned complaints">
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="top-profile">
+
+
+                <div class="profile-avatar">
+
+                    {{ (name | default('E', true))[0] | upper }}
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name | default("Employee", true) }}
+                    </strong>
+
+                    <span>
+                        {{ department | default("Employee", true) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
+
+        <section class="admin-welcome">
+
+            <div>
+
+                <span class="purple-label">
+                    EMPLOYEE WORKSPACE
+                </span>
+
+                <h1>
+                    Hello {{ name | default("Employee", true) }}
+                </h1>
+
+                <p>
+                    Review assigned complaints,
+                    manage customer issues and
+                    update resolution progress.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-date">
+
+                <span>
+                    Department
+                </span>
+
+                <strong>
+                    {{ department | default("Support", true) }}
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================== -->
+
+        {% with messages =
+            get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-area">
+
+                    {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section
+            id="performance"
+            class="new-stat-grid">
+
+
+            <!-- TOTAL ASSIGNED -->
+
+            <div class="new-stat-card stat-yellow">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Assigned
+                        </span>
+
+                        <small>
+                            Total complaints
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+
+                    {{ total | default(0, true) }}
+
+                </strong>
+
+                <p>
+                    Assigned to you
+                </p>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="new-stat-card stat-blue">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <small>
+                            Waiting for action
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+
+                    {{ pending | default(0, true) }}
+
+                </strong>
+
+                <p>
+                    Requires attention
+                </p>
+
+            </div>
+
+
+            <!-- IN PROGRESS -->
+
+            <div class="new-stat-card stat-purple">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            In Progress
+                        </span>
+
+                        <small>
+                            Currently working
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+
+                    {{ in_progress | default(0, true) }}
+
+                </strong>
+
+                <p>
+                    Active complaints
+                </p>
+
+            </div>
+
+
+            <!-- RESOLVED -->
+
+            <div class="new-stat-card stat-green">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Resolved
+                        </span>
+
+                        <small>
+                            Successfully completed
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ✓
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+
+                    {{ resolved | default(0, true) }}
+
+                </strong>
+
+                <p>
+                    Completed complaints
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             WORK SUMMARY
+        ================================================== -->
+
+        <section class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        WORK OVERVIEW
+                    </span>
+
+                    <h2>
+                        Today's Workspace
+                    </h2>
+
+                    <p>
+                        Quick overview of your
+                        complaint resolution workflow.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="customer-ai-grid">
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        01
+                    </div>
+
+                    <h3>
+                        Review
+                    </h3>
+
+                    <p>
+                        Read the customer complaint
+                        and AI-generated analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        02
+                    </div>
+
+                    <h3>
+                        Investigate
+                    </h3>
+
+                    <p>
+                        Review the complaint details
+                        and understand the issue.
+                    </p>
+
+                </div>
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        03
+                    </div>
+
+                    <h3>
+                        Update
+                    </h3>
+
+                    <p>
+                        Update complaint status and
+                        add a response for the customer.
+                    </p>
+
+                </div>
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        04
+                    </div>
+
+                    <h3>
+                        Resolve
+                    </h3>
+
+                    <p>
+                        Complete the complaint after
+                        resolving the customer issue.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ASSIGNED COMPLAINTS
+        ================================================== -->
+
+        <section
+            id="assigned-complaints"
+            class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        MY TASKS
+                    </span>
+
+                    <h2>
+                        Assigned Complaints
+                    </h2>
+
+                    <p>
+                        Complaints assigned to you
+                        by the administrator.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if complaints %}
+
+
+            <div class="complaint-table-wrapper">
+
+
+                <table class="new-complaint-table">
+
+
+                    <!-- TABLE HEADER -->
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Complaint
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Priority
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for complaint in complaints %}
+
+
+                        <!-- =========================================
+                             COMPLAINT ROW
+                        ========================================== -->
+
+                        <tr class="employee-complaint-row">
+
+
+                            <!-- COMPLAINT -->
+
+                            <td>
+
+                                <strong>
+
+                                    {{ complaint.complaint_id }}
+
+                                </strong>
+
+                                <span>
+
+                                    {{ complaint.subject }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- CUSTOMER -->
+
+                            <td>
+
+                                {{ complaint.customer_name
+                                   | default(
+                                       "Customer",
+                                       true
+                                   ) }}
+
+                                <small>
+
+                                    {{ complaint.customer_email
+                                       | default(
+                                           "",
+                                           true
+                                       ) }}
+
+                                </small>
+
+                            </td>
+
+
+                            <!-- CATEGORY -->
+
+                            <td>
+
+                                {{ complaint.category
+                                   | default(
+                                       "Unclassified",
+                                       true
+                                   ) }}
+
+                            </td>
+
+
+                            <!-- PRIORITY -->
+
+                            <td>
+
+                                <span class="
+                                    priority-pill
+                                    priority-{{
+                                        complaint.priority
+                                        | default(
+                                            'normal',
+                                            true
+                                        )
+                                        | lower
+                                    }}">
+
+                                    {{ complaint.priority
+                                       | default(
+                                           "Normal",
+                                           true
+                                       ) }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span class="
+                                    status-pill
+                                    status-{{
+                                        complaint.status
+                                        | default(
+                                            'pending',
+                                            true
+                                        )
+                                        | lower
+                                        | replace(
+                                            ' ',
+                                            '-'
+                                        )
+                                    }}">
+
+                                    {{ complaint.status
+                                       | default(
+                                           "Pending",
+                                           true
+                                       ) }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <button
+                                    type="button"
+                                    class="manage-button"
+                                    onclick="toggleEmployeeComplaint(
+                                        'employee-complaint-{{ complaint.id }}'
+                                    )">
+
+                                    Manage
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- =========================================
+                             EXPANDED COMPLAINT
+                        ========================================== -->
+
+                        <tr
+                            id="employee-complaint-{{ complaint.id }}"
+                            class="complaint-detail-row">
+
+
+                            <td colspan="6">
+
+
+                                <div class="complaint-management">
+
+
+                                    <!-- DESCRIPTION -->
+
+                                    <div class="complaint-detail-box">
+
+                                        <span>
+                                            CUSTOMER COMPLAINT
+                                        </span>
+
+                                        <h3>
+
+                                            {{ complaint.subject }}
+
+                                        </h3>
+
+                                        <p>
+
+                                            {{ complaint.description }}
+
+                                        </p>
+
+                                    </div>
+
+
+                                    <!-- =================================
+                                         AI ANALYSIS
+                                    ================================== -->
+
+                                    <div class="mini-ai-grid">
+
+
+                                        <!-- CATEGORY -->
+
+                                        <div>
+
+                                            <span>
+                                                AI Category
+                                            </span>
+
+                                            <strong>
+
+                                                {{ complaint.category
+                                                   | default(
+                                                       "—",
+                                                       true
+                                                   ) }}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- CONFIDENCE -->
+
+                                        <div>
+
+                                            <span>
+                                                Confidence
+                                            </span>
+
+                                            <strong>
+
+                                                {% if
+                                                    complaint.confidence
+                                                    is not none
+                                                %}
+
+                                                    {{ complaint.confidence }}%
+
+                                                {% else %}
+
+                                                    —
+
+                                                {% endif %}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- SENTIMENT -->
+
+                                        <div>
+
+                                            <span>
+                                                Sentiment
+                                            </span>
+
+                                            <strong>
+
+                                                {{ complaint.sentiment
+                                                   | default(
+                                                       "—",
+                                                       true
+                                                   ) }}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- PRIORITY -->
+
+                                        <div>
+
+                                            <span>
+                                                Priority
+                                            </span>
+
+                                            <strong>
+
+                                                {{ complaint.priority
+                                                   | default(
+                                                       "Normal",
+                                                       true
+                                                   ) }}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- DEPARTMENT -->
+
+                                        <div>
+
+                                            <span>
+                                                Department
+                                            </span>
+
+                                            <strong>
+
+                                                {{ complaint.department
+                                                   | default(
+                                                       "—",
+                                                       true
+                                                   ) }}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                        <!-- STATUS -->
+
+                                        <div>
+
+                                            <span>
+                                                Current Status
+                                            </span>
+
+                                            <strong>
+
+                                                {{ complaint.status
+                                                   | default(
+                                                       "Pending",
+                                                       true
+                                                   ) }}
+
+                                            </strong>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <!-- =================================
+                                         CUSTOMER INFORMATION
+                                    ================================== -->
+
+                                    <div class="complaint-detail-box">
+
+                                        <span>
+                                            CUSTOMER INFORMATION
+                                        </span>
+
+
+                                        <p>
+
+                                            <strong>
+                                                Name:
+                                            </strong>
+
+                                            {{ complaint.customer_name
+                                               | default(
+                                                   "Customer",
+                                                   true
+                                               ) }}
+
+                                        </p>
+
+
+                                        {% if complaint.customer_email %}
+
+                                        <p>
+
+                                            <strong>
+                                                Email:
+                                            </strong>
+
+                                            {{ complaint.customer_email }}
+
+                                        </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <!-- =================================
+                                         EMPLOYEE UPDATE FORM
+                                    ================================== -->
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'employee_update',
+                                            complaint_id=complaint.id
+                                        ) }}"
+                                        class="new-update-form">
+
+
+                                        <!-- STATUS -->
+
+                                        <div>
+
+                                            <label>
+                                                Update Status
+                                            </label>
+
+
+                                            <select
+                                                name="status"
+                                                required>
+
+
+                                                <option
+                                                    value="Assigned"
+
+                                                    {% if
+                                                        complaint.status
+                                                        == "Assigned"
+                                                    %}
+
+                                                        selected
+
+                                                    {% endif %}>
+
+                                                    Assigned
+
+                                                </option>
+
+
+                                                <option
+                                                    value="In Progress"
+
+                                                    {% if
+                                                        complaint.status
+                                                        == "In Progress"
+                                                    %}
+
+                                                        selected
+
+                                                    {% endif %}>
+
+                                                    In Progress
+
+                                                </option>
+
+
+                                                <option
+                                                    value="Resolved"
+
+                                                    {% if
+                                                        complaint.status
+                                                        == "Resolved"
+                                                    %}
+
+                                                        selected
+
+                                                    {% endif %}>
+
+                                                    Resolved
+
+                                                </option>
+
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <!-- RESPONSE -->
+
+                                        <div>
+
+                                            <label>
+                                                Response / Resolution Note
+                                            </label>
+
+
+                                            <textarea
+                                                name="admin_response"
+                                                placeholder="Write an update or resolution message for the customer...">{{ complaint.admin_response | default("", true) }}</textarea>
+
+                                        </div>
+
+
+                                        <!-- BUTTON -->
+
+                                        <button type="submit">
+
+                                            Save Update
+
+                                        </button>
+
+
+                                    </form>
+
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="new-empty-state">
+
+                <div>
+                    ✓
+                </div>
+
+                <h3>
+                    No assigned complaints
+                </h3>
+
+                <p>
+                    You currently have no complaints
+                    assigned to you. New assignments
+                    from the administrator will
+                    appear here.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+        <!-- =================================================
+             PERFORMANCE SECTION
+        ================================================== -->
+
+        <section class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        PERFORMANCE
+                    </span>
+
+                    <h2>
+                        Resolution Summary
+                    </h2>
+
+                    <p>
+                        Overview of your complaint
+                        handling performance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="new-chart-card">
+
+
+                <div class="new-resolution">
+
+
+                    <!-- RESOLUTION RATE -->
+
+                    <div class="resolution-ring">
+
+                        <strong>
+
+                            {{ resolution_rate
+                               | default(
+                                   0,
+                                   true
+                               ) }}%
+
+                        </strong>
+
+                        <span>
+                            Resolved
+                        </span>
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="resolution-list">
+
+
+                        <div>
+
+                            <span>
+                                Assigned
+                            </span>
+
+                            <strong>
+
+                                {{ total
+                                   | default(
+                                       0,
+                                       true
+                                   ) }}
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Pending
+                            </span>
+
+                            <strong>
+
+                                {{ pending
+                                   | default(
+                                       0,
+                                       true
+                                   ) }}
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                In Progress
+                            </span>
+
+                            <strong>
+
+                                {{ in_progress
+                                   | default(
+                                       0,
+                                       true
+                                   ) }}
+
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Resolved
+                            </span>
+
+                            <strong>
+
+                                {{ resolved
+                                   | default(
+                                       0,
+                                       true
+                                   ) }}
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BACK -->
+
+        <a href="{{ url_for('home') }}"
+           class="page-back-btn">
+
+            ← Back
+
+        </a>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     EMPLOYEE PAGE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+
+/* =========================================================
+   OPEN / CLOSE COMPLAINT
+========================================================= */
+
+function toggleEmployeeComplaint(id) {
+
+    const detailRow =
+        document.getElementById(id);
+
+
+    if (!detailRow) {
+        return;
+    }
+
+
+    detailRow.classList.toggle(
+        "show-detail"
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH COMPLAINTS
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const searchInput =
+            document.getElementById(
+                "employeeSearch"
+            );
+
+
+        if (!searchInput) {
+            return;
+        }
+
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+
+                const searchValue =
+                    this.value
+                        .toLowerCase()
+                        .trim();
+
+
+                const rows =
+                    document.querySelectorAll(
+                        ".employee-complaint-row"
+                    );
+
+
+                rows.forEach(
+                    function (row) {
+
+
+                        const rowText =
+                            row.innerText
+                                .toLowerCase();
+
+
+                        const matches =
+                            rowText.includes(
+                                searchValue
+                            );
+
+
+                        row.style.display =
+                            matches
+                                ? ""
+                                : "none";
+
+
+                        if (!matches) {
+
+                            const detailRow =
+                                row.nextElementSibling;
+
+
+                            if (
+                                detailRow &&
+                                detailRow.classList.contains(
+                                    "complaint-detail-row"
+                                )
+                            ) {
+
+                                detailRow.classList.remove(
+                                    "show-detail"
+                                );
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+
+<!-- =========================================================
+     MAIN JS
+========================================================= -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

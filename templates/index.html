@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body>
+
+<div class="app-background">
+
+    <div class="app-shell">
+
+
+        <!-- ============================================
+             SIDEBAR
+        ============================================= -->
+
+        <aside class="sidebar">
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('home') }}"
+               class="brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                SmartComplaint <span>AI</span>
+
+            </a>
+
+
+            <!-- MAIN -->
+
+            <div class="sidebar-label">
+                Main
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('home') }}"
+                       class="active">
+
+                        <span class="menu-icon">
+                            ⌂
+                        </span>
+
+                        Home
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="#features">
+
+                        <span class="menu-icon">
+                            ✦
+                        </span>
+
+                        Features
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="#how-it-works">
+
+                        <span class="menu-icon">
+                            ▥
+                        </span>
+
+                        How It Works
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="sidebar-label">
+                Account
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('login') }}">
+
+                        <span class="menu-icon">
+                            →
+                        </span>
+
+                        Login
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('register') }}">
+
+                        <span class="menu-icon">
+                            ＋
+                        </span>
+
+                        Register
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- SIDEBAR INFO -->
+
+            <div class="sidebar-home-info">
+
+                <div class="sidebar-info-icon">
+                    ✦
+                </div>
+
+                <strong>
+                    AI Powered
+                </strong>
+
+                <p>
+                    Intelligent complaint
+                    classification and routing.
+                </p>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ============================================
+             MAIN CONTENT
+        ============================================= -->
+
+        <main class="main-content">
+
+
+            <!-- ========================================
+                 TOPBAR
+            ========================================= -->
+
+            <header class="home-topbar">
+
+                <div class="home-status">
+
+                    <span class="status-dot"></span>
+
+                    AI System Active
+
+                </div>
+
+
+                <div class="home-top-actions">
+
+                    <a href="{{ url_for('login') }}"
+                       class="home-login-btn">
+
+                        Sign In
+
+                    </a>
+
+
+                    <a href="{{ url_for('register') }}"
+                       class="home-register-btn">
+
+                        Get Started →
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- ========================================
+                 FLASH MESSAGES
+            ========================================= -->
+
+            {% with messages =
+                get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-area">
+
+                        {% for category, message in messages %}
+
+                            <div class="alert alert-{{ category }}">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- ========================================
+                 HERO
+            ========================================= -->
+
+            <section class="home-hero">
+
+
+                <!-- LEFT -->
+
+                <div class="home-hero-content">
+
+
+                    <div class="eyebrow">
+
+                        AI-POWERED COMPLAINT MANAGEMENT
+
+                    </div>
+
+
+                    <h1>
+
+                        Smarter complaints.
+                        <span>
+                            Faster resolutions.
+                        </span>
+
+                    </h1>
+
+
+                    <p>
+
+                        SmartComplaint AI uses Natural Language
+                        Processing and BERT to automatically
+                        classify customer complaints, analyze
+                        sentiment, determine priority and route
+                        each issue to the right department.
+
+                    </p>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="hero-buttons">
+
+                        <a href="{{ url_for('register') }}"
+                           class="hero-primary-btn">
+
+                            Get Started Free →
+
+                        </a>
+
+
+                        <a href="{{ url_for('login') }}"
+                           class="hero-secondary-btn">
+
+                            Sign In
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- SMALL FEATURES -->
+
+                    <div class="hero-mini-features">
+
+                        <div>
+
+                            <span>✓</span>
+
+                            BERT Classification
+
+                        </div>
+
+
+                        <div>
+
+                            <span>✓</span>
+
+                            Smart Routing
+
+                        </div>
+
+
+                        <div>
+
+                            <span>✓</span>
+
+                            Real-Time Tracking
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT VISUAL -->
+
+                <div class="home-hero-visual">
+
+
+                    <div class="hero-dashboard-card">
+
+
+                        <!-- HEADER -->
+
+                        <div class="hero-card-header">
+
+                            <div>
+
+                                <span>
+                                    AI ANALYSIS
+                                </span>
+
+                                <h3>
+                                    Complaint Intelligence
+                                </h3>
+
+                            </div>
+
+
+                            <div class="ai-live">
+
+                                <span></span>
+
+                                LIVE
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COMPLAINT SAMPLE -->
+
+                        <div class="hero-complaint">
+
+                            <div class="hero-complaint-top">
+
+                                <span>
+                                    CMP-1024
+                                </span>
+
+                                <small>
+                                    Analyzing...
+                                </small>
+
+                            </div>
+
+
+                            <strong>
+
+                                Payment deducted but
+                                order failed
+
+                            </strong>
+
+
+                            <p>
+
+                                My payment was deducted
+                                from my account but the
+                                transaction failed.
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- AI RESULT -->
+
+                        <div class="hero-analysis-grid">
+
+
+                            <div>
+
+                                <span>
+                                    Category
+                                </span>
+
+                                <strong>
+                                    Billing
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Confidence
+                                </span>
+
+                                <strong>
+                                    96%
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Sentiment
+                                </span>
+
+                                <strong>
+                                    Negative
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Priority
+                                </span>
+
+                                <strong>
+                                    High
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROUTING -->
+
+                        <div class="hero-routing">
+
+                            <div class="routing-icon">
+                                →
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    SMART ROUTING
+                                </span>
+
+                                <strong>
+                                    Billing Department
+                                </strong>
+
+                            </div>
+
+
+                            <div class="routing-success">
+                                ✓
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- DECORATION -->
+
+                    <div class="floating-ai-card">
+
+                        <span>
+                            AI
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                BERT Model
+                            </strong>
+
+                            <small>
+                                Classification Ready
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================================
+                 FEATURES
+            ========================================= -->
+
+            <section id="features"
+                     class="home-section">
+
+
+                <div class="home-section-heading">
+
+                    <span>
+                        INTELLIGENT FEATURES
+                    </span>
+
+                    <h2>
+                        Everything needed to manage
+                        complaints intelligently.
+                    </h2>
+
+                    <p>
+                        From complaint submission to final
+                        resolution, AI assists throughout
+                        the complete workflow.
+                    </p>
+
+                </div>
+
+
+                <div class="home-feature-grid">
+
+
+                    <!-- FEATURE 1 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            01
+                        </div>
+
+                        <div class="feature-icon">
+                            AI
+                        </div>
+
+                        <h3>
+                            BERT Classification
+                        </h3>
+
+                        <p>
+                            NLP and BERT automatically
+                            understand complaint text and
+                            predict its category.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEATURE 2 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            02
+                        </div>
+
+                        <div class="feature-icon">
+                            ☺
+                        </div>
+
+                        <h3>
+                            Sentiment Analysis
+                        </h3>
+
+                        <p>
+                            Analyze customer emotion to
+                            identify negative, neutral
+                            and positive complaints.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEATURE 3 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            03
+                        </div>
+
+                        <div class="feature-icon">
+                            !
+                        </div>
+
+                        <h3>
+                            Priority Detection
+                        </h3>
+
+                        <p>
+                            Automatically identify urgent
+                            complaints that require
+                            immediate attention.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEATURE 4 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            04
+                        </div>
+
+                        <div class="feature-icon">
+                            →
+                        </div>
+
+                        <h3>
+                            Smart Routing
+                        </h3>
+
+                        <p>
+                            Complaints are automatically
+                            forwarded to the appropriate
+                            department.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEATURE 5 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            05
+                        </div>
+
+                        <div class="feature-icon">
+                            ⌕
+                        </div>
+
+                        <h3>
+                            Complaint Tracking
+                        </h3>
+
+                        <p>
+                            Customers can monitor complaint
+                            progress from submission
+                            through resolution.
+                        </p>
+
+                    </div>
+
+
+                    <!-- FEATURE 6 -->
+
+                    <div class="home-feature-card">
+
+                        <div class="feature-number">
+                            06
+                        </div>
+
+                        <div class="feature-icon">
+                            ▥
+                        </div>
+
+                        <h3>
+                            Analytics Dashboard
+                        </h3>
+
+                        <p>
+                            Administrators can analyze
+                            complaint categories, status,
+                            sentiment and department load.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================================
+                 HOW IT WORKS
+            ========================================= -->
+
+            <section id="how-it-works"
+                     class="home-section workflow-section">
+
+
+                <div class="home-section-heading">
+
+                    <span>
+                        AI WORKFLOW
+                    </span>
+
+                    <h2>
+                        From complaint to resolution.
+                    </h2>
+
+                    <p>
+                        SmartComplaint AI simplifies the
+                        complete complaint management process.
+                    </p>
+
+                </div>
+
+
+                <div class="workflow-grid">
+
+
+                    <!-- STEP 1 -->
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Submit
+                        </h3>
+
+                        <p>
+                            Customer enters complaint
+                            subject and description.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-arrow">
+                        →
+                    </div>
+
+
+                    <!-- STEP 2 -->
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Analyze
+                        </h3>
+
+                        <p>
+                            NLP processes complaint
+                            text and sentiment.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-arrow">
+                        →
+                    </div>
+
+
+                    <!-- STEP 3 -->
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Classify
+                        </h3>
+
+                        <p>
+                            BERT predicts complaint
+                            category and confidence.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-arrow">
+                        →
+                    </div>
+
+
+                    <!-- STEP 4 -->
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            04
+                        </div>
+
+                        <h3>
+                            Route
+                        </h3>
+
+                        <p>
+                            Complaint reaches the
+                            correct department.
+                        </p>
+
+                    </div>
+
+
+                    <div class="workflow-arrow">
+                        →
+                    </div>
+
+
+                    <!-- STEP 5 -->
+
+                    <div class="workflow-card">
+
+                        <div class="workflow-number">
+                            05
+                        </div>
+
+                        <h3>
+                            Resolve
+                        </h3>
+
+                        <p>
+                            Employee handles the issue
+                            and updates its status.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================================
+                 USER ROLES
+            ========================================= -->
+
+            <section class="home-section">
+
+
+                <div class="home-section-heading">
+
+                    <span>
+                        ONE PLATFORM
+                    </span>
+
+                    <h2>
+                        Built for the complete team.
+                    </h2>
+
+                </div>
+
+
+                <div class="role-grid">
+
+
+                    <!-- CUSTOMER -->
+
+                    <div class="role-card">
+
+                        <div class="role-icon">
+                            C
+                        </div>
+
+                        <span>
+                            CUSTOMER
+                        </span>
+
+                        <h3>
+                            Submit & Track
+                        </h3>
+
+                        <p>
+                            Register complaints, view AI
+                            classification and track
+                            resolution progress.
+                        </p>
+
+                    </div>
+
+
+                    <!-- EMPLOYEE -->
+
+                    <div class="role-card">
+
+                        <div class="role-icon">
+                            E
+                        </div>
+
+                        <span>
+                            EMPLOYEE
+                        </span>
+
+                        <h3>
+                            Handle Complaints
+                        </h3>
+
+                        <p>
+                            Review assigned complaints,
+                            update progress and provide
+                            resolution responses.
+                        </p>
+
+                    </div>
+
+
+                    <!-- ADMIN -->
+
+                    <div class="role-card">
+
+                        <div class="role-icon">
+                            A
+                        </div>
+
+                        <span>
+                            ADMINISTRATOR
+                        </span>
+
+                        <h3>
+                            Manage & Analyze
+                        </h3>
+
+                        <p>
+                            Assign complaints, monitor
+                            operations and analyze
+                            complaint trends.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================================
+                 CTA
+            ========================================= -->
+
+            <section class="home-cta">
+
+                <div>
+
+                    <span>
+                        SMARTER CUSTOMER SUPPORT
+                    </span>
+
+                    <h2>
+                        Ready to manage complaints
+                        intelligently?
+                    </h2>
+
+                    <p>
+                        Create an account and experience
+                        AI-powered complaint management.
+                    </p>
+
+                </div>
+
+
+                <div class="cta-buttons">
+
+                    <a href="{{ url_for('register') }}"
+                       class="hero-primary-btn">
+
+                        Create Account →
+
+                    </a>
+
+
+                    <a href="{{ url_for('login') }}"
+                       class="cta-login-btn">
+
+                        Sign In
+
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- ========================================
+                 FOOTER
+            ========================================= -->
+
+            <footer class="home-footer">
+
+                <a href="{{ url_for('home') }}"
+                   class="footer-brand">
+
+                    <div class="brand-icon">
+                        AI
+                    </div>
+
+                    <strong>
+                        SmartComplaint
+                        <span>AI</span>
+                    </strong>
+
+                </a>
+
+
+                <p>
+                    AI-Powered Customer Complaint
+                    Classification & Routing System
+                </p>
+
+
+                <span>
+                    NLP • BERT • Machine Learning
+                </span>
+
+            </footer>
+
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================
+     MAIN JAVASCRIPT
+============================================= -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

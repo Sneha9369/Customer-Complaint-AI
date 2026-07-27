@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body>
+
+<div class="app-background">
+
+    <div class="app-shell">
+
+
+        <!-- ============================================
+             SIDEBAR
+        ============================================= -->
+
+        <aside class="sidebar">
+
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('home') }}"
+               class="brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                SmartComplaint <span>AI</span>
+
+            </a>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="sidebar-label">
+                Account
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('login') }}"
+                       class="active">
+
+                        <span class="menu-icon">
+                            →
+                        </span>
+
+                        Login
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('register') }}">
+
+                        <span class="menu-icon">
+                            ＋
+                        </span>
+
+                        Register
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="sidebar-label">
+                Navigation
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('home') }}">
+
+                        <span class="menu-icon">
+                            ⌂
+                        </span>
+
+                        Home
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- INFO -->
+
+            <div class="sidebar-home-info">
+
+                <div class="sidebar-info-icon">
+                    ✦
+                </div>
+
+                <strong>
+                    SmartComplaint AI
+                </strong>
+
+                <p>
+                    Intelligent complaint
+                    classification and routing
+                    powered by NLP & BERT.
+                </p>
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ============================================
+             MAIN CONTENT
+        ============================================= -->
+
+        <main class="main-content">
+
+
+            <!-- TOPBAR -->
+
+            <div class="topbar">
+
+                <a href="{{ url_for('home') }}"
+                   class="page-back-btn">
+
+                    ← Back to Home
+
+                </a>
+
+            </div>
+
+
+            <!-- ========================================
+                 AUTH LAYOUT
+            ========================================= -->
+
+            <div class="auth-layout">
+
+
+                <!-- ====================================
+                     LEFT INFORMATION
+                ===================================== -->
+
+                <div class="auth-info">
+
+
+                    <div class="eyebrow">
+
+                        SMARTCOMPLAINT AI
+
+                    </div>
+
+
+                    <h1>
+
+                        Complaints handled
+                        intelligently.
+
+                    </h1>
+
+
+                    <p>
+
+                        AI-powered complaint classification,
+                        intelligent routing and real-time
+                        complaint management in one
+                        intelligent platform.
+
+                    </p>
+
+
+                    <!-- FEATURES -->
+
+                    <div class="auth-features">
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            BERT Complaint Classification
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Sentiment & Priority Analysis
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Intelligent Department Routing
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Real-Time Complaint Tracking
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ====================================
+                     LOGIN CARD
+                ===================================== -->
+
+                <div class="auth-card">
+
+
+                    <div class="eyebrow">
+
+                        WELCOME BACK
+
+                    </div>
+
+
+                    <h2>
+                        Sign in
+                    </h2>
+
+
+                    <p class="auth-subtitle">
+
+                        Customers, employees and
+                        administrators can access
+                        their dashboard here.
+
+                    </p>
+
+
+                    <!-- ================================
+                         FLASH MESSAGES
+                    ================================= -->
+
+                    {% with messages =
+                        get_flashed_messages(with_categories=true) %}
+
+                        {% if messages %}
+
+                            {% for category, message in messages %}
+
+                                <div class="alert alert-{{ category }}">
+
+                                    {{ message }}
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+
+                    <!-- ================================
+                         LOGIN FORM
+                    ================================= -->
+
+                    <form method="POST"
+                          action="{{ url_for('login') }}">
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label for="email">
+
+                                Email Address
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="loginPassword">
+
+                                Password
+
+                            </label>
+
+
+                            <div class="password-field">
+
+
+                                <input
+                                    type="password"
+                                    id="loginPassword"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required>
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="togglePassword(
+                                        'loginPassword',
+                                        this
+                                    )">
+
+                                    Show
+
+                                </button>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- OPTIONS -->
+
+                        <div class="login-options">
+
+
+                            <label class="remember-option">
+
+                                <input
+                                    type="checkbox"
+                                    name="remember">
+
+                                <span>
+                                    Remember me
+                                </span>
+
+                            </label>
+
+
+                            <span class="secure-login">
+
+                                Secure Login
+
+                            </span>
+
+
+                        </div>
+
+
+                        <!-- SIGN IN -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-dark btn-full">
+
+                            Sign In →
+
+                        </button>
+
+
+                    </form>
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="auth-divider">
+
+                        <span>
+                            NEW TO SMARTCOMPLAINT?
+                        </span>
+
+                    </div>
+
+
+                    <!-- REGISTER -->
+
+                    <div class="auth-footer">
+
+                        Don't have an account?
+
+                        <a href="{{ url_for('register') }}">
+
+                            Create Account
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- LOGIN INFORMATION -->
+
+                    <div class="login-role-info">
+
+                        <div>
+
+                            <span>
+                                C
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Customer
+                                </strong>
+
+                                Submit & track complaints
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                E
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Employee
+                                </strong>
+
+                                Handle assigned complaints
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                A
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Admin
+                                </strong>
+
+                                Manage complaint system
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+</div>
+
+
+<!-- ============================================
+     PAGE JAVASCRIPT
+============================================= -->
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input =
+        document.getElementById(inputId);
+
+
+    if (!input) {
+        return;
+    }
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "Hide";
+
+    }
+
+    else {
+
+        input.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+</script>
+
+
+<!-- MAIN JS -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

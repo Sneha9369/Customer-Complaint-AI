@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submit Complaint | SmartComplaint AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body class="new-admin-body">
+
+<div class="admin-app">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="new-sidebar">
+
+        <div>
+
+            <a href="{{ url_for('customer_dashboard') }}"
+               class="new-brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                <div>
+                    <strong>SmartComplaint</strong>
+                    <span>AI</span>
+                </div>
+
+            </a>
+
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    MAIN
+                </p>
+
+
+                <a href="{{ url_for('customer_dashboard') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌂</span>
+                    Dashboard
+
+                </a>
+
+
+                <a href="{{ url_for('submit_complaint') }}"
+                   class="sidebar-link active">
+
+                    <span class="side-icon">＋</span>
+                    New Complaint
+
+                </a>
+
+
+                <a href="{{ url_for('track_complaints') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌕</span>
+                    Track Complaints
+
+                </a>
+
+            </div>
+
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    NAVIGATION
+                </p>
+
+                <a href="{{ url_for('home') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌂</span>
+                    Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+
+                <div class="help-icon">
+                    AI
+                </div>
+
+                <strong>
+                    AI Assistant
+                </strong>
+
+                <p>
+                    Describe your issue clearly.
+                    AI will analyze and route it
+                    automatically.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="sidebar-link logout-link">
+
+                <span class="side-icon">←</span>
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="new-admin-main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="new-topbar">
+
+            <div>
+
+                <a href="{{ url_for('customer_dashboard') }}"
+                   class="page-back-btn">
+
+                    ← Back to Dashboard
+
+                </a>
+
+            </div>
+
+
+            <div class="top-profile">
+
+                <div class="profile-avatar">
+                    {{ (name | default('C', true))[0] | upper }}
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name | default("Customer", true) }}
+                    </strong>
+
+                    <span>
+                        Customer
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= HEADING ================= -->
+
+        <section class="admin-welcome">
+
+            <div>
+
+                <span class="purple-label">
+                    NEW COMPLAINT
+                </span>
+
+                <h1>
+                    Tell us what happened.
+                </h1>
+
+                <p>
+                    Submit your issue and SmartComplaint AI
+                    will analyze its relevance, category,
+                    sentiment, priority and department.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-date">
+
+                <span>
+                    AI Processing
+                </span>
+
+                <strong>
+                    Automatic
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= FLASH MESSAGE ================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-area">
+
+                    {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+
+        <!-- ================= COMPLAINT FORM ================= -->
+
+        <section class="new-section">
+
+            <div class="submit-layout">
+
+
+                <!-- LEFT SIDE -->
+
+                <div class="submit-form-card">
+
+
+                    <div class="new-section-heading">
+
+                        <div>
+
+                            <span class="purple-label">
+                                COMPLAINT DETAILS
+                            </span>
+
+                            <h2>
+                                Submit a Complaint
+                            </h2>
+
+                            <p>
+                                Explain your problem clearly
+                                so the system can analyze it.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <form method="POST"
+                          action="{{ url_for('submit_complaint') }}"
+                          id="complaintForm">
+
+
+                        <!-- SUBJECT -->
+
+                        <div class="form-group">
+
+                            <label for="subject">
+                                Complaint Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                class="form-control"
+                                maxlength="200"
+                                placeholder="Example: Payment deducted twice"
+                                required>
+
+                            <small class="field-help">
+                                Enter a short title for your complaint.
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="form-group">
+
+                            <label for="description">
+                                Complaint Description
+                            </label>
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                class="form-control complaint-textarea"
+                                rows="8"
+                                minlength="10"
+                                maxlength="2000"
+                                placeholder="Describe your issue in detail..."
+                                required></textarea>
+
+
+                            <div class="textarea-footer">
+
+                                <small class="field-help">
+                                    Explain what happened and
+                                    what resolution you expect.
+                                </small>
+
+                                <small id="characterCount">
+                                    0 / 2000
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- EXAMPLE -->
+
+                        <div class="complaint-example-box">
+
+                            <span>
+                                EXAMPLE
+                            </span>
+
+                            <p>
+                                "My payment was deducted twice
+                                from my bank account for the same
+                                order. Please refund the extra
+                                amount."
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="submit-button-row">
+
+                            <a href="{{ url_for('customer_dashboard') }}"
+                               class="cancel-button">
+
+                                Cancel
+
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                id="submitComplaintButton"
+                                class="btn btn-dark">
+
+                                Submit Complaint →
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- ================= RIGHT SIDE ================= -->
+
+                <div class="submit-side-panel">
+
+
+                    <div class="new-chart-card">
+
+                        <div class="new-chart-heading">
+
+                            <span>
+                                SMARTCOMPLAINT AI
+                            </span>
+
+                            <h3>
+                                AI Complaint Analysis
+                            </h3>
+
+                        </div>
+
+
+
+                        <div class="submit-ai-steps">
+
+
+                            <!-- STEP 1 -->
+
+                            <div class="submit-ai-step">
+
+                                <div class="ai-step-number">
+                                    01
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Relevance Detection
+                                    </strong>
+
+                                    <p>
+                                        The system first checks
+                                        whether the submitted text
+                                        is a valid customer complaint.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- STEP 2 -->
+
+                            <div class="submit-ai-step">
+
+                                <div class="ai-step-number">
+                                    02
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Category Classification
+                                    </strong>
+
+                                    <p>
+                                        Relevant complaints are
+                                        classified into the most
+                                        appropriate category.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- STEP 3 -->
+
+                            <div class="submit-ai-step">
+
+                                <div class="ai-step-number">
+                                    03
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Sentiment Analysis
+                                    </strong>
+
+                                    <p>
+                                        AI analyzes the customer's
+                                        tone and sentiment.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- STEP 4 -->
+
+                            <div class="submit-ai-step">
+
+                                <div class="ai-step-number">
+                                    04
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Priority Detection
+                                    </strong>
+
+                                    <p>
+                                        The system determines
+                                        how urgently the complaint
+                                        should be handled.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- STEP 5 -->
+
+                            <div class="submit-ai-step">
+
+                                <div class="ai-step-number">
+                                    05
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        Smart Routing
+                                    </strong>
+
+                                    <p>
+                                        Relevant complaints are
+                                        routed to the appropriate
+                                        department.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= CATEGORIES ================= -->
+
+                    <div class="complaint-tips-card">
+
+                        <span class="purple-label">
+                            COMPLAINT CATEGORIES
+                        </span>
+
+                        <h3>
+                            Supported Categories
+                        </h3>
+
+
+                        <div class="tip-item">
+                            <span>01</span>
+                            <p>Payment & Billing</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>02</span>
+                            <p>Refund & Cancellation</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>03</span>
+                            <p>Delivery & Shipping</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>04</span>
+                            <p>Product Quality</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>05</span>
+                            <p>Technical Issues</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>06</span>
+                            <p>Account & Login</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>07</span>
+                            <p>Customer Service</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>08</span>
+                            <p>Fraud & Security</p>
+                        </div>
+
+                        <div class="tip-item">
+                            <span>09</span>
+                            <p>Other Complaint</p>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= IRRELEVANT INFO ================= -->
+
+                    <div class="complaint-tips-card">
+
+                        <span class="purple-label">
+                            RELEVANCE CHECK
+                        </span>
+
+                        <h3>
+                            What about irrelevant input?
+                        </h3>
+
+                        <div class="tip-item">
+
+                            <span>✓</span>
+
+                            <p>
+                                Valid customer complaints
+                                continue to category classification.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <span>!</span>
+
+                            <p>
+                                Unrelated text such as questions,
+                                greetings, study requests or random
+                                messages can be marked as
+                                <strong>Irrelevant / Out of Scope</strong>.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= TIPS ================= -->
+
+                    <div class="complaint-tips-card">
+
+                        <span class="purple-label">
+                            QUICK TIPS
+                        </span>
+
+                        <h3>
+                            Write a better complaint
+                        </h3>
+
+
+                        <div class="tip-item">
+
+                            <span>✓</span>
+
+                            <p>
+                                Clearly describe the exact problem.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <span>✓</span>
+
+                            <p>
+                                Include relevant transaction,
+                                product or service details.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <span>✓</span>
+
+                            <p>
+                                Mention what resolution you expect.
+                            </p>
+
+                        </div>
+
+
+                        <div class="tip-item">
+
+                            <span>✓</span>
+
+                            <p>
+                                Never enter passwords, OTPs
+                                or sensitive information.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= AI PIPELINE ================= -->
+
+        <section class="new-section">
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        AI PIPELINE
+                    </span>
+
+                    <h2>
+                        How your complaint is processed
+                    </h2>
+
+                    <p>
+                        From submission to intelligent routing.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="customer-ai-grid">
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        01
+                    </div>
+
+                    <h3>
+                        Relevance
+                    </h3>
+
+                    <p>
+                        Checks whether the text is
+                        relevant or irrelevant.
+                    </p>
+
+                </div>
+
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        02
+                    </div>
+
+                    <h3>
+                        Category
+                    </h3>
+
+                    <p>
+                        Predicts the complaint
+                        category.
+                    </p>
+
+                </div>
+
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        03
+                    </div>
+
+                    <h3>
+                        Sentiment
+                    </h3>
+
+                    <p>
+                        Detects customer sentiment
+                        from the complaint.
+                    </p>
+
+                </div>
+
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        04
+                    </div>
+
+                    <h3>
+                        Priority
+                    </h3>
+
+                    <p>
+                        Determines complaint
+                        urgency and priority.
+                    </p>
+
+                </div>
+
+
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        05
+                    </div>
+
+                    <h3>
+                        Routing
+                    </h3>
+
+                    <p>
+                        Sends the complaint to
+                        the correct department.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ================= PAGE JAVASCRIPT ================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const description =
+        document.getElementById("description");
+
+    const characterCount =
+        document.getElementById("characterCount");
+
+    const form =
+        document.getElementById("complaintForm");
+
+    const submitButton =
+        document.getElementById("submitComplaintButton");
+
+
+    /* CHARACTER COUNTER */
+
+    if (description && characterCount) {
+
+        function updateCharacterCount() {
+
+            characterCount.textContent =
+                description.value.length + " / 2000";
+        }
+
+        description.addEventListener(
+            "input",
+            updateCharacterCount
+        );
+
+        updateCharacterCount();
+    }
+
+
+    /* FORM SUBMISSION */
+
+    if (form && submitButton) {
+
+        form.addEventListener("submit", function () {
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Analyzing Complaint...";
+        });
+    }
+
+});
+
+</script>
+
+
+<!-- MAIN JS -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Register | SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body>
+
+<div class="app-background">
+
+    <div class="app-shell">
+
+
+        <!-- ============================================
+             SIDEBAR
+        ============================================= -->
+
+        <aside class="sidebar">
+
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('home') }}"
+               class="brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                SmartComplaint <span>AI</span>
+
+            </a>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="sidebar-label">
+                Account
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('login') }}">
+
+                        <span class="menu-icon">
+                            →
+                        </span>
+
+                        Login
+
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a href="{{ url_for('register') }}"
+                       class="active">
+
+                        <span class="menu-icon">
+                            ＋
+                        </span>
+
+                        Register
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="sidebar-label">
+                Navigation
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <a href="{{ url_for('home') }}">
+
+                        <span class="menu-icon">
+                            ⌂
+                        </span>
+
+                        Home
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <!-- INFO CARD -->
+
+            <div class="sidebar-home-info">
+
+                <div class="sidebar-info-icon">
+                    ✦
+                </div>
+
+                <strong>
+                    SmartComplaint AI
+                </strong>
+
+                <p>
+                    Create your account and
+                    start managing complaints
+                    intelligently.
+                </p>
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ============================================
+             MAIN CONTENT
+        ============================================= -->
+
+        <main class="main-content">
+
+
+            <!-- TOPBAR -->
+
+            <div class="topbar">
+
+                <a href="{{ url_for('home') }}"
+                   class="page-back-btn">
+
+                    ← Back to Home
+
+                </a>
+
+            </div>
+
+
+            <!-- ========================================
+                 AUTH LAYOUT
+            ========================================= -->
+
+            <div class="auth-layout">
+
+
+                <!-- ====================================
+                     LEFT INFORMATION
+                ===================================== -->
+
+                <div class="auth-info">
+
+
+                    <div class="eyebrow">
+
+                        JOIN SMARTCOMPLAINT AI
+
+                    </div>
+
+
+                    <h1>
+
+                        Better support starts here.
+
+                    </h1>
+
+
+                    <p>
+
+                        Create your account to submit
+                        complaints, receive AI-powered
+                        classification and track every
+                        issue from submission to resolution.
+
+                    </p>
+
+
+                    <!-- FEATURES -->
+
+                    <div class="auth-features">
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Easy Complaint Submission
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            BERT AI Classification
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Automatic Department Routing
+
+                        </div>
+
+
+                        <div class="auth-feature">
+
+                            <span class="auth-check">
+                                ✓
+                            </span>
+
+                            Real-Time Status Tracking
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ====================================
+                     REGISTER CARD
+                ===================================== -->
+
+                <div class="auth-card register-card">
+
+
+                    <div class="eyebrow">
+
+                        CREATE ACCOUNT
+
+                    </div>
+
+
+                    <h2>
+                        Get started
+                    </h2>
+
+
+                    <p class="auth-subtitle">
+
+                        Create your SmartComplaint AI
+                        customer account.
+
+                    </p>
+
+
+                    <!-- =================================
+                         FLASH MESSAGES
+                    ================================== -->
+
+                    {% with messages =
+                        get_flashed_messages(with_categories=true) %}
+
+                        {% if messages %}
+
+                            {% for category, message in messages %}
+
+                                <div class="alert alert-{{ category }}">
+
+                                    {{ message }}
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% endwith %}
+
+
+                    <!-- =================================
+                         REGISTER FORM
+                    ================================== -->
+
+                    <form method="POST"
+                          action="{{ url_for('register') }}"
+                          id="registerForm">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="form-group">
+
+                            <label for="name">
+
+                                Full Name
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-control"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label for="email">
+
+                                Email Address
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="registerPassword">
+
+                                Password
+
+                            </label>
+
+
+                            <div class="password-field">
+
+                                <input
+                                    type="password"
+                                    id="registerPassword"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Create a password"
+                                    autocomplete="new-password"
+                                    minlength="6"
+                                    required>
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="toggleRegisterPassword(
+                                        'registerPassword',
+                                        this
+                                    )">
+
+                                    Show
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="confirmPassword">
+
+                                Confirm Password
+
+                            </label>
+
+
+                            <div class="password-field">
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirm_password"
+                                    class="form-control"
+                                    placeholder="Enter password again"
+                                    autocomplete="new-password"
+                                    minlength="6"
+                                    required>
+
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    onclick="toggleRegisterPassword(
+                                        'confirmPassword',
+                                        this
+                                    )">
+
+                                    Show
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PASSWORD MESSAGE -->
+
+                        <div
+                            id="passwordMessage"
+                            class="password-message">
+                        </div>
+
+
+                        <!-- TERMS -->
+
+                        <label class="register-terms">
+
+                            <input
+                                type="checkbox"
+                                id="terms"
+                                required>
+
+                            <span>
+
+                                I agree to use SmartComplaint AI
+                                for complaint management.
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- REGISTER BUTTON -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-dark btn-full">
+
+                            Create Account →
+
+                        </button>
+
+
+                    </form>
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="auth-divider">
+
+                        <span>
+                            ALREADY REGISTERED?
+                        </span>
+
+                    </div>
+
+
+                    <!-- LOGIN -->
+
+                    <div class="auth-footer">
+
+                        Already have an account?
+
+                        <a href="{{ url_for('login') }}">
+
+                            Sign In
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+</div>
+
+
+<!-- ============================================
+     REGISTER PAGE JAVASCRIPT
+============================================= -->
+
+<script>
+
+
+/* ============================================
+   SHOW / HIDE PASSWORD
+============================================= */
+
+function toggleRegisterPassword(inputId, button) {
+
+    const input =
+        document.getElementById(inputId);
+
+
+    if (!input) {
+        return;
+    }
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "Hide";
+
+    }
+
+    else {
+
+        input.type = "password";
+
+        button.textContent = "Show";
+
+    }
+
+}
+
+
+/* ============================================
+   PASSWORD MATCH VALIDATION
+============================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const form =
+            document.getElementById(
+                "registerForm"
+            );
+
+
+        const password =
+            document.getElementById(
+                "registerPassword"
+            );
+
+
+        const confirmPassword =
+            document.getElementById(
+                "confirmPassword"
+            );
+
+
+        const message =
+            document.getElementById(
+                "passwordMessage"
+            );
+
+
+        if (
+            !form ||
+            !password ||
+            !confirmPassword
+        ) {
+            return;
+        }
+
+
+        /* CHECK WHILE TYPING */
+
+        function checkPasswords() {
+
+
+            if (
+                confirmPassword.value === ""
+            ) {
+
+                message.textContent = "";
+
+                message.className =
+                    "password-message";
+
+                return;
+            }
+
+
+            if (
+                password.value ===
+                confirmPassword.value
+            ) {
+
+                message.textContent =
+                    "✓ Passwords match";
+
+                message.className =
+                    "password-message password-match";
+
+            }
+
+            else {
+
+                message.textContent =
+                    "Passwords do not match";
+
+                message.className =
+                    "password-message password-error";
+
+            }
+
+        }
+
+
+        password.addEventListener(
+            "input",
+            checkPasswords
+        );
+
+
+        confirmPassword.addEventListener(
+            "input",
+            checkPasswords
+        );
+
+
+        /* CHECK BEFORE SUBMIT */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+
+                if (
+                    password.value !==
+                    confirmPassword.value
+                ) {
+
+                    event.preventDefault();
+
+
+                    message.textContent =
+                        "Passwords do not match";
+
+                    message.className =
+                        "password-message password-error";
+
+
+                    confirmPassword.focus();
+
+                }
+
+            }
+        );
+
+
+    }
+);
+
+</script>
+
+
+<!-- ============================================
+     MAIN JS
+============================================= -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>

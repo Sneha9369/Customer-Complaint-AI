@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard | SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body class="new-admin-body">
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="new-sidebar">
+
+        <div>
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('customer_dashboard') }}"
+               class="new-brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                <div>
+                    <strong>SmartComplaint</strong>
+                    <span>AI</span>
+                </div>
+
+            </a>
+
+
+            <!-- MAIN MENU -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    MAIN
+                </p>
+
+
+                <a href="{{ url_for('customer_dashboard') }}"
+                   class="sidebar-link active">
+
+                    <span class="side-icon">⌂</span>
+
+                    Dashboard
+
+                </a>
+
+
+                <a href="{{ url_for('submit_complaint') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">＋</span>
+
+                    New Complaint
+
+                </a>
+
+
+                <a href="{{ url_for('track_complaints') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌕</span>
+
+                    Track Complaints
+
+                </a>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    ACCOUNT
+                </p>
+
+
+                <a href="#complaints"
+                   class="sidebar-link">
+
+                    <span class="side-icon">☷</span>
+
+                    My Complaints
+
+                </a>
+
+
+                <a href="{{ url_for('home') }}"
+                   class="sidebar-link">
+
+                    <span class="side-icon">⌂</span>
+
+                    Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+
+                <div class="help-icon">
+                    ?
+                </div>
+
+                <strong>
+                    Need Help?
+                </strong>
+
+                <p>
+                    Submit your complaint and
+                    track its progress here.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="sidebar-link logout-link">
+
+                <span class="side-icon">
+                    ←
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="new-admin-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="new-topbar">
+
+
+            <!-- SEARCH -->
+
+            <div class="top-search">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="customerSearch"
+                    placeholder="Search your complaints">
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="top-profile">
+
+                <div class="profile-avatar">
+
+                    {{ (name | default('C', true))[0] | upper }}
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name | default("Customer", true) }}
+                    </strong>
+
+                    <span>
+                        Customer
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             WELCOME SECTION
+        ================================================== -->
+
+        <section class="admin-welcome">
+
+            <div>
+
+                <span class="purple-label">
+                    CUSTOMER PORTAL
+                </span>
+
+                <h1>
+                    Hello {{ name | default("Customer", true) }}
+                </h1>
+
+                <p>
+                    Submit complaints, monitor their progress
+                    and view AI-powered complaint insights.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-date">
+
+                <span>
+                    SmartComplaint
+                </span>
+
+                <strong>
+                    Customer Center
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================== -->
+
+        {% with messages =
+            get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-area">
+
+                    {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="customer-actions">
+
+
+            <!-- SUBMIT -->
+
+            <a href="{{ url_for('submit_complaint') }}"
+               class="customer-action-card">
+
+                <div class="customer-action-icon">
+                    ＋
+                </div>
+
+
+                <div>
+
+                    <span>
+                        NEW COMPLAINT
+                    </span>
+
+                    <h3>
+                        Submit Complaint
+                    </h3>
+
+                    <p>
+                        Describe your issue and let AI
+                        classify and route it automatically.
+                    </p>
+
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+            </a>
+
+
+            <!-- TRACK -->
+
+            <a href="{{ url_for('track_complaints') }}"
+               class="customer-action-card">
+
+                <div class="customer-action-icon">
+                    ⌕
+                </div>
+
+
+                <div>
+
+                    <span>
+                        TRACKING
+                    </span>
+
+                    <h3>
+                        Track Complaint
+                    </h3>
+
+                    <p>
+                        Check complaint status, department
+                        and administrator response.
+                    </p>
+
+                </div>
+
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+            </a>
+
+
+        </section>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="new-stat-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="new-stat-card stat-yellow">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Total Complaints
+                        </span>
+
+                        <small>
+                            Submitted by you
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ total | default(0, true) }}
+                </strong>
+
+                <p>
+                    Total interactions
+                </p>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="new-stat-card stat-blue">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <small>
+                            Waiting for action
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ pending | default(0, true) }}
+                </strong>
+
+                <p>
+                    Awaiting review
+                </p>
+
+            </div>
+
+
+            <!-- ACTIVE -->
+
+            <div class="new-stat-card stat-purple">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            In Progress
+                        </span>
+
+                        <small>
+                            Being resolved
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ in_progress | default(0, true) }}
+                </strong>
+
+                <p>
+                    Currently active
+                </p>
+
+            </div>
+
+
+            <!-- RESOLVED -->
+
+            <div class="new-stat-card stat-green">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Resolved
+                        </span>
+
+                        <small>
+                            Successfully completed
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ✓
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ resolved | default(0, true) }}
+                </strong>
+
+                <p>
+                    Issues resolved
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             MY COMPLAINTS
+        ================================================== -->
+
+        <section
+            id="complaints"
+            class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        COMPLAINT HISTORY
+                    </span>
+
+                    <h2>
+                        My Complaints
+                    </h2>
+
+                    <p>
+                        View your submitted complaints
+                        and their current progress.
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('submit_complaint') }}"
+                   class="manage-button">
+
+                    + New Complaint
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 COMPLAINTS AVAILABLE
+            ================================================== -->
+
+            {% if complaints %}
+
+
+                <div class="complaint-table-wrapper">
+
+
+                    <table class="new-complaint-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Complaint
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Department
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Details
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                        {% for complaint in complaints %}
+
+
+                            <!-- =====================================
+                                 COMPLAINT ROW
+                            ====================================== -->
+
+                            <tr class="customer-complaint-row">
+
+
+                                <!-- ID / SUBJECT -->
+
+                                <td>
+
+                                    <strong>
+
+                                        {{ complaint.complaint_id }}
+
+                                    </strong>
+
+
+                                    <span>
+
+                                        {{ complaint.subject }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- CATEGORY -->
+
+                                <td>
+
+                                    {{ complaint.category
+                                       | default(
+                                           "Processing",
+                                           true
+                                       ) }}
+
+                                </td>
+
+
+                                <!-- PRIORITY -->
+
+                                <td>
+
+                                    <span class="
+                                        priority-pill
+                                        priority-{{
+                                            complaint.priority
+                                            | default(
+                                                'normal',
+                                                true
+                                            )
+                                            | lower
+                                        }}">
+
+                                        {{ complaint.priority
+                                           | default(
+                                               "Normal",
+                                               true
+                                           ) }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DEPARTMENT -->
+
+                                <td>
+
+                                    {{ complaint.department
+                                       | default(
+                                           "Routing...",
+                                           true
+                                       ) }}
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    <span class="
+                                        status-pill
+                                        status-{{
+                                            complaint.status
+                                            | default(
+                                                'pending',
+                                                true
+                                            )
+                                            | lower
+                                            | replace(
+                                                ' ',
+                                                '-'
+                                            )
+                                        }}">
+
+                                        {{ complaint.status
+                                           | default(
+                                               "Pending",
+                                               true
+                                           ) }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DETAILS -->
+
+                                <td>
+
+                                    <button
+                                        type="button"
+                                        class="manage-button"
+                                        onclick="toggleCustomerComplaint(
+                                            'customer-complaint-{{ complaint.id }}'
+                                        )">
+
+                                        View
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- =====================================
+                                 EXPANDED DETAILS
+                            ====================================== -->
+
+                            <tr
+                                id="customer-complaint-{{ complaint.id }}"
+                                class="complaint-detail-row">
+
+
+                                <td colspan="6">
+
+
+                                    <div class="complaint-management">
+
+
+                                        <!-- DESCRIPTION -->
+
+                                        <div class="complaint-detail-box">
+
+                                            <span>
+                                                YOUR COMPLAINT
+                                            </span>
+
+
+                                            <p>
+
+                                                {{ complaint.description }}
+
+                                            </p>
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             AI ANALYSIS
+                                        ================================== -->
+
+                                        <div class="mini-ai-grid">
+
+
+                                            <!-- CATEGORY -->
+
+                                            <div>
+
+                                                <span>
+                                                    AI Category
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.category
+                                                       | default(
+                                                           "Processing",
+                                                           true
+                                                       ) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- CONFIDENCE -->
+
+                                            <div>
+
+                                                <span>
+                                                    AI Confidence
+                                                </span>
+
+                                                <strong>
+
+                                                    {% if
+                                                        complaint.confidence
+                                                        is not none
+                                                    %}
+
+                                                        {{ complaint.confidence }}%
+
+                                                    {% else %}
+
+                                                        —
+
+                                                    {% endif %}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- SENTIMENT -->
+
+                                            <div>
+
+                                                <span>
+                                                    Sentiment
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.sentiment
+                                                       | default(
+                                                           "—",
+                                                           true
+                                                       ) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- PRIORITY -->
+
+                                            <div>
+
+                                                <span>
+                                                    Priority
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.priority
+                                                       | default(
+                                                           "Normal",
+                                                           true
+                                                       ) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- DEPARTMENT -->
+
+                                            <div>
+
+                                                <span>
+                                                    Routed To
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.department
+                                                       | default(
+                                                           "Processing",
+                                                           true
+                                                       ) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- STATUS -->
+
+                                            <div>
+
+                                                <span>
+                                                    Current Status
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.status
+                                                       | default(
+                                                           "Pending",
+                                                           true
+                                                       ) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             PROGRESS
+                                        ================================== -->
+
+                                        <div class="complaint-detail-box">
+
+                                            <span>
+                                                COMPLAINT PROGRESS
+                                            </span>
+
+
+                                            <div class="customer-progress">
+
+
+                                                <div class="
+                                                    progress-step
+                                                    completed">
+
+                                                    <div>
+                                                        ✓
+                                                    </div>
+
+                                                    <span>
+                                                        Submitted
+                                                    </span>
+
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-line
+                                                    {% if
+                                                        complaint.status
+                                                        != 'Pending'
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-step
+                                                    {% if
+                                                        complaint.status
+                                                        in [
+                                                            'Assigned',
+                                                            'In Progress',
+                                                            'Resolved'
+                                                        ]
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+
+                                                    <div>
+                                                        2
+                                                    </div>
+
+                                                    <span>
+                                                        Assigned
+                                                    </span>
+
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-line
+                                                    {% if
+                                                        complaint.status
+                                                        in [
+                                                            'In Progress',
+                                                            'Resolved'
+                                                        ]
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-step
+                                                    {% if
+                                                        complaint.status
+                                                        in [
+                                                            'In Progress',
+                                                            'Resolved'
+                                                        ]
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+
+                                                    <div>
+                                                        3
+                                                    </div>
+
+                                                    <span>
+                                                        In Progress
+                                                    </span>
+
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-line
+                                                    {% if
+                                                        complaint.status
+                                                        == 'Resolved'
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+                                                </div>
+
+
+                                                <div class="
+                                                    progress-step
+                                                    {% if
+                                                        complaint.status
+                                                        == 'Resolved'
+                                                    %}
+                                                        completed
+                                                    {% endif %}
+                                                ">
+
+                                                    <div>
+                                                        ✓
+                                                    </div>
+
+                                                    <span>
+                                                        Resolved
+                                                    </span>
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             ADMIN RESPONSE
+                                        ================================== -->
+
+                                        <div class="complaint-detail-box">
+
+                                            <span>
+                                                ADMIN RESPONSE
+                                            </span>
+
+
+                                            {% if complaint.admin_response %}
+
+                                                <p>
+
+                                                    {{ complaint.admin_response }}
+
+                                                </p>
+
+                                            {% else %}
+
+                                                <p class="muted-text">
+
+                                                    No response has been
+                                                    added yet. Check again
+                                                    after your complaint
+                                                    has been reviewed.
+
+                                                </p>
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             EMPLOYEE
+                                        ================================== -->
+
+                                        {% if complaint.employee_name %}
+
+                                            <div class="complaint-detail-box">
+
+                                                <span>
+                                                    ASSIGNED EMPLOYEE
+                                                </span>
+
+
+                                                <p>
+
+                                                    Your complaint is
+                                                    currently assigned to
+
+                                                    <strong>
+
+                                                        {{ complaint.employee_name }}
+
+                                                    </strong>.
+
+                                                </p>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+
+                </div>
+
+
+            <!-- =================================================
+                 NO COMPLAINTS
+            ================================================== -->
+
+            {% else %}
+
+
+                <div class="new-empty-state">
+
+
+                    <div>
+                        ◎
+                    </div>
+
+
+                    <h3>
+                        No complaints yet
+                    </h3>
+
+
+                    <p>
+                        You haven't submitted any
+                        complaints yet. Create your first
+                        complaint and our AI will
+                        automatically classify it.
+                    </p>
+
+
+                    <a href="{{ url_for('submit_complaint') }}"
+                       class="manage-button">
+
+                        Submit First Complaint
+
+                    </a>
+
+
+                </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+        <!-- =================================================
+             AI INFORMATION
+        ================================================== -->
+
+        <section class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        HOW IT WORKS
+                    </span>
+
+                    <h2>
+                        Powered by AI
+                    </h2>
+
+                    <p>
+                        Your complaint goes through an
+                        intelligent NLP processing pipeline.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="customer-ai-grid">
+
+
+                <!-- STEP 1 -->
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        01
+                    </div>
+
+                    <h3>
+                        Complaint Analysis
+                    </h3>
+
+                    <p>
+                        NLP processes the complaint
+                        description and understands
+                        the issue.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 2 -->
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        02
+                    </div>
+
+                    <h3>
+                        BERT Classification
+                    </h3>
+
+                    <p>
+                        The AI model automatically
+                        predicts the complaint
+                        category.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        03
+                    </div>
+
+                    <h3>
+                        Smart Routing
+                    </h3>
+
+                    <p>
+                        Your complaint is routed
+                        to the appropriate
+                        department.
+                    </p>
+
+                </div>
+
+
+                <!-- STEP 4 -->
+
+                <div class="customer-ai-card">
+
+                    <div class="ai-step">
+                        04
+                    </div>
+
+                    <h3>
+                        Resolution
+                    </h3>
+
+                    <p>
+                        Track the progress until
+                        your complaint is
+                        successfully resolved.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BACK
+        ================================================== -->
+
+        <a href="{{ url_for('home') }}"
+           class="page-back-btn">
+
+            ← Back
+
+        </a>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     PAGE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+function toggleCustomerComplaint(id) {
+
+    const detailRow =
+        document.getElementById(id);
+
+    if (!detailRow) {
+        return;
+    }
+
+    detailRow.classList.toggle(
+        "show-detail"
+    );
+}
+
+
+/* =========================================================
+   CUSTOMER SEARCH
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const searchInput =
+            document.getElementById(
+                "customerSearch"
+            );
+
+
+        if (!searchInput) {
+            return;
+        }
+
+
+        searchInput.addEventListener(
+            "input",
+            function () {
+
+                const searchValue =
+                    this.value
+                        .toLowerCase()
+                        .trim();
+
+
+                const rows =
+                    document.querySelectorAll(
+                        ".customer-complaint-row"
+                    );
+
+
+                rows.forEach(
+                    function (row) {
+
+                        const rowText =
+                            row.innerText
+                                .toLowerCase();
+
+
+                        const matches =
+                            rowText.includes(
+                                searchValue
+                            );
+
+
+                        row.style.display =
+                            matches
+                                ? ""
+                                : "none";
+
+
+                        /* close detail row
+                           when filtered out */
+
+                        if (!matches) {
+
+                            const detailRow =
+                                row.nextElementSibling;
+
+                            if (
+                                detailRow &&
+                                detailRow.classList.contains(
+                                    "complaint-detail-row"
+                                )
+                            ) {
+
+                                detailRow.classList.remove(
+                                    "show-detail"
+                                );
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+
+<!-- MAIN JS -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+</html>

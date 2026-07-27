@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | SmartComplaint AI</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- CHART JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body class="new-admin-body">
+
+<div class="admin-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="new-sidebar">
+
+        <div>
+
+            <!-- BRAND -->
+
+            <a href="{{ url_for('admin_dashboard') }}"
+               class="new-brand">
+
+                <div class="brand-icon">
+                    AI
+                </div>
+
+                <div>
+                    <strong>SmartComplaint</strong>
+                    <span>AI</span>
+                </div>
+
+            </a>
+
+
+            <!-- MAIN MENU -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    MAIN
+                </p>
+
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="sidebar-link active">
+
+                    <span class="side-icon">⌂</span>
+
+                    Dashboard
+
+                </a>
+
+
+                <a href="#complaints"
+                   class="sidebar-link">
+
+                    <span class="side-icon">☷</span>
+
+                    Complaints
+
+                </a>
+
+
+                <a href="#analytics"
+                   class="sidebar-link">
+
+                    <span class="side-icon">▥</span>
+
+                    Analytics
+
+                </a>
+
+            </div>
+
+
+            <!-- MANAGEMENT -->
+
+            <div class="sidebar-section">
+
+                <p class="sidebar-title">
+                    MANAGEMENT
+                </p>
+
+
+                <a href="#employees"
+                   class="sidebar-link">
+
+                    <span class="side-icon">♙</span>
+
+                    Employees
+
+                </a>
+
+
+                <a href="#complaints"
+                   class="sidebar-link">
+
+                    <span class="side-icon">▧</span>
+
+                    Reports
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIDEBAR BOTTOM -->
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+
+                <div class="help-icon">
+                    ?
+                </div>
+
+                <strong>
+                    Need Help?
+                </strong>
+
+                <p>
+                    Manage customer complaints
+                    with AI assistance.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="sidebar-link logout-link">
+
+                <span class="side-icon">
+                    ←
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="new-admin-main">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="new-topbar">
+
+            <!-- SEARCH -->
+
+            <div class="top-search">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="adminSearch"
+                    placeholder="Search complaints or users">
+
+            </div>
+
+
+            <!-- PROFILE -->
+
+            <div class="top-profile">
+
+                <button
+                    type="button"
+                    class="notification-button">
+
+                    ♢
+
+                </button>
+
+
+                <div class="profile-avatar">
+
+                    {{ (name | default('A', true))[0] | upper }}
+
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name | default("System Admin", true) }}
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================== -->
+
+        <section class="admin-welcome">
+
+            <div>
+
+                <span class="purple-label">
+                    ADMINISTRATION
+                </span>
+
+                <h1>
+                    Hello {{ name | default("System Admin", true) }}
+                </h1>
+
+                <p>
+                    Monitor complaint operations and
+                    AI insights in real time.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-date">
+
+                <span>
+                    SmartComplaint
+                </span>
+
+                <strong>
+                    Control Center
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             STAT CARDS
+        ================================================== -->
+
+        <section class="new-stat-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="new-stat-card stat-yellow">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Total Complaints
+                        </span>
+
+                        <small>
+                            All interactions
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ total | default(0, true) }}
+                </strong>
+
+                <p>
+                    Complaints registered
+                </p>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="new-stat-card stat-blue">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Pending
+                        </span>
+
+                        <small>
+                            Waiting for action
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ pending | default(0, true) }}
+                </strong>
+
+                <p>
+                    Requires attention
+                </p>
+
+            </div>
+
+
+            <!-- ACTIVE -->
+
+            <div class="new-stat-card stat-purple">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Active
+                        </span>
+
+                        <small>
+                            In progress
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ in_progress | default(0, true) }}
+                </strong>
+
+                <p>
+                    Currently being resolved
+                </p>
+
+            </div>
+
+
+            <!-- RESOLUTION -->
+
+            <div class="new-stat-card stat-green">
+
+                <div class="stat-top">
+
+                    <div>
+
+                        <span>
+                            Resolution
+                        </span>
+
+                        <small>
+                            Success rate
+                        </small>
+
+                    </div>
+
+                    <div class="stat-arrow">
+                        ↗
+                    </div>
+
+                </div>
+
+
+                <strong class="stat-number">
+                    {{ resolution_rate | default(0, true) }}%
+                </strong>
+
+                <p>
+                    Successfully resolved
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-area">
+
+                    {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =================================================
+             ANALYTICS
+        ================================================== -->
+
+        <section
+            id="analytics"
+            class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        AI INSIGHTS
+                    </span>
+
+                    <h2>
+                        Complaint Analytics
+                    </h2>
+
+                    <p>
+                        AI-powered operational insights.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY + STATUS -->
+
+            <div class="new-chart-grid">
+
+
+                <!-- CATEGORY -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            CLASSIFICATION
+                        </span>
+
+                        <h3>
+                            Complaint Categories
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-chart-box">
+
+                        <canvas id="categoryChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            WORKFLOW
+                        </span>
+
+                        <h3>
+                            Complaint Status
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-chart-box">
+
+                        <canvas id="statusChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRIORITY + SENTIMENT -->
+
+            <div class="new-chart-grid">
+
+
+                <!-- PRIORITY -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            URGENCY
+                        </span>
+
+                        <h3>
+                            Priority Distribution
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-chart-box">
+
+                        <canvas id="priorityChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SENTIMENT -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            NLP ANALYSIS
+                        </span>
+
+                        <h3>
+                            Customer Sentiment
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-chart-box">
+
+                        <canvas id="sentimentChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DEPARTMENT + RESOLUTION -->
+
+            <div class="new-chart-grid">
+
+
+                <!-- DEPARTMENT -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            ROUTING
+                        </span>
+
+                        <h3>
+                            Department Workload
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-chart-box">
+
+                        <canvas id="departmentChart"></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESOLUTION -->
+
+                <div class="new-chart-card">
+
+                    <div class="new-chart-heading">
+
+                        <span>
+                            PERFORMANCE
+                        </span>
+
+                        <h3>
+                            Resolution Overview
+                        </h3>
+
+                    </div>
+
+
+                    <div class="new-resolution">
+
+
+                        <div class="resolution-ring">
+
+                            <strong>
+
+                                {{ resolution_rate | default(0, true) }}%
+
+                            </strong>
+
+                            <span>
+                                Resolved
+                            </span>
+
+                        </div>
+
+
+                        <div class="resolution-list">
+
+
+                            <div>
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong>
+                                    {{ total | default(0, true) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Pending
+                                </span>
+
+                                <strong>
+                                    {{ pending | default(0, true) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Active
+                                </span>
+
+                                <strong>
+                                    {{ in_progress | default(0, true) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Resolved
+                                </span>
+
+                                <strong>
+                                    {{ resolved | default(0, true) }}
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MONTHLY TREND -->
+
+            <div class="new-chart-card full-chart">
+
+                <div class="new-chart-heading">
+
+                    <span>
+                        TREND ANALYSIS
+                    </span>
+
+                    <h3>
+                        Complaint Activity
+                    </h3>
+
+                </div>
+
+
+                <div class="trend-box">
+
+                    <canvas id="monthlyChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT MANAGEMENT
+        ================================================== -->
+
+        <section
+            id="complaints"
+            class="new-section">
+
+
+            <div class="new-section-heading">
+
+                <div>
+
+                    <span class="purple-label">
+                        MANAGEMENT
+                    </span>
+
+                    <h2>
+                        Recent Complaints
+                    </h2>
+
+                    <p>
+                        Review, assign and manage
+                        customer complaints.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="complaint-table-wrapper">
+
+
+                {% if complaints %}
+
+
+                    <table class="new-complaint-table">
+
+
+                        <!-- TABLE HEADER -->
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Complaint
+                                </th>
+
+                                <th>
+                                    Customer
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Employee
+                                </th>
+
+                                <th>
+                                    Manage
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                        {% for complaint in complaints %}
+
+
+                            <!-- =========================================
+                                 MAIN COMPLAINT ROW
+                            ========================================== -->
+
+                            <tr class="complaint-search-row">
+
+
+                                <!-- COMPLAINT -->
+
+                                <td>
+
+                                    <strong>
+
+                                        {{ complaint.complaint_id }}
+
+                                    </strong>
+
+                                    <span>
+
+                                        {{ complaint.subject }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- CUSTOMER -->
+
+                                <td>
+
+                                    {{ complaint.customer_name | default("Customer", true) }}
+
+                                    <small>
+
+                                        {{ complaint.customer_email | default("", true) }}
+
+                                    </small>
+
+                                </td>
+
+
+                                <!-- CATEGORY -->
+
+                                <td>
+
+                                    {{ complaint.category | default("Unclassified", true) }}
+
+                                </td>
+
+
+                                <!-- PRIORITY -->
+
+                                <td>
+
+                                    <span class="
+                                        priority-pill
+                                        priority-{{ complaint.priority | default('normal', true) | lower }}">
+
+                                        {{ complaint.priority | default("Normal", true) }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    <span class="
+                                        status-pill
+                                        status-{{ complaint.status | default('pending', true) | lower | replace(' ', '-') }}">
+
+                                        {{ complaint.status | default("Pending", true) }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- EMPLOYEE -->
+
+                                <td>
+
+                                    {{ complaint.employee_name | default("Not Assigned", true) }}
+
+                                </td>
+
+
+                                <!-- MANAGE -->
+
+                                <td>
+
+                                    <button
+                                        type="button"
+                                        class="manage-button"
+                                        onclick="toggleComplaint('complaint-{{ complaint.id }}')">
+
+                                        Manage
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- =========================================
+                                 COMPLAINT DETAILS
+                            ========================================== -->
+
+                            <tr
+                                id="complaint-{{ complaint.id }}"
+                                class="complaint-detail-row">
+
+
+                                <td colspan="7">
+
+
+                                    <div class="complaint-management">
+
+
+                                        <!-- DESCRIPTION -->
+
+                                        <div class="complaint-detail-box">
+
+                                            <span>
+                                                DESCRIPTION
+                                            </span>
+
+                                            <p>
+
+                                                {{ complaint.description }}
+
+                                            </p>
+
+                                        </div>
+
+
+                                        <!-- AI ANALYSIS -->
+
+                                        <div class="mini-ai-grid">
+
+
+                                            <!-- CATEGORY -->
+
+                                            <div>
+
+                                                <span>
+                                                    Category
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.category | default("—", true) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- CONFIDENCE -->
+
+                                            <div>
+
+                                                <span>
+                                                    Confidence
+                                                </span>
+
+                                                <strong>
+
+                                                    {% if complaint.confidence is not none %}
+
+                                                        {{ complaint.confidence }}%
+
+                                                    {% else %}
+
+                                                        —
+
+                                                    {% endif %}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- SENTIMENT -->
+
+                                            <div>
+
+                                                <span>
+                                                    Sentiment
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.sentiment | default("—", true) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                            <!-- DEPARTMENT -->
+
+                                            <div>
+
+                                                <span>
+                                                    Department
+                                                </span>
+
+                                                <strong>
+
+                                                    {{ complaint.department | default("—", true) }}
+
+                                                </strong>
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <!-- =================================
+                                             ASSIGN EMPLOYEE
+                                        ================================== -->
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'assign_complaint',
+                                                complaint_id=complaint.id
+                                            ) }}"
+                                            class="new-assign-form">
+
+
+                                            <div>
+
+                                                <label>
+                                                    Assign Employee
+                                                </label>
+
+
+                                                <select
+                                                    name="employee_id"
+                                                    required>
+
+
+                                                    <option value="">
+
+                                                        Select Employee
+
+                                                    </option>
+
+
+                                                    {% for employee in employees %}
+
+
+                                                        <option
+                                                            value="{{ employee.id }}"
+
+                                                            {% if complaint.assigned_employee == employee.id %}
+
+                                                                selected
+
+                                                            {% endif %}>
+
+
+                                                            {{ employee.name }}
+
+
+                                                            {% if employee.department %}
+
+                                                                -
+                                                                {{ employee.department }}
+
+                                                            {% endif %}
+
+
+                                                        </option>
+
+
+                                                    {% endfor %}
+
+
+                                                </select>
+
+                                            </div>
+
+
+                                            <button type="submit">
+
+                                                Assign
+
+                                            </button>
+
+
+                                        </form>
+
+
+                                        <!-- =================================
+                                             UPDATE COMPLAINT
+                                        ================================== -->
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'admin_update',
+                                                complaint_id=complaint.id
+                                            ) }}"
+                                            class="new-update-form">
+
+
+                                            <!-- STATUS -->
+
+                                            <div>
+
+                                                <label>
+                                                    Status
+                                                </label>
+
+
+                                                <select
+                                                    name="status"
+                                                    required>
+
+
+                                                    <option
+                                                        value="Pending"
+                                                        {% if complaint.status == "Pending" %}
+                                                            selected
+                                                        {% endif %}>
+
+                                                        Pending
+
+                                                    </option>
+
+
+                                                    <option
+                                                        value="Assigned"
+                                                        {% if complaint.status == "Assigned" %}
+                                                            selected
+                                                        {% endif %}>
+
+                                                        Assigned
+
+                                                    </option>
+
+
+                                                    <option
+                                                        value="In Progress"
+                                                        {% if complaint.status == "In Progress" %}
+                                                            selected
+                                                        {% endif %}>
+
+                                                        In Progress
+
+                                                    </option>
+
+
+                                                    <option
+                                                        value="Resolved"
+                                                        {% if complaint.status == "Resolved" %}
+                                                            selected
+                                                        {% endif %}>
+
+                                                        Resolved
+
+                                                    </option>
+
+
+                                                    <option
+                                                        value="Rejected"
+                                                        {% if complaint.status == "Rejected" %}
+                                                            selected
+                                                        {% endif %}>
+
+                                                        Rejected
+
+                                                    </option>
+
+
+                                                </select>
+
+                                            </div>
+
+
+                                            <!-- RESPONSE -->
+
+                                            <div>
+
+                                                <label>
+                                                    Admin Response
+                                                </label>
+
+
+                                                <textarea
+                                                    name="admin_response"
+                                                    placeholder="Write response or instructions...">{{ complaint.admin_response | default("", true) }}</textarea>
+
+                                            </div>
+
+
+                                            <button type="submit">
+
+                                                Save Changes
+
+                                            </button>
+
+
+                                        </form>
+
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+
+                {% else %}
+
+
+                    <!-- =========================================
+                         EMPTY STATE
+                    ========================================== -->
+
+                    <div class="new-empty-state">
+
+                        <div>
+                            ◎
+                        </div>
+
+                        <h3>
+                            No complaints yet
+                        </h3>
+
+                        <p>
+                            New customer complaints will
+                            appear here automatically.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BACK BUTTON
+        ================================================== -->
+
+        <a href="{{ url_for('home') }}"
+           class="page-back-btn">
+
+            ← Back
+
+        </a>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     FLASK → CHART DATA
+========================================================= -->
+
+<script type="application/json"
+        id="category-data">
+{{ category_data | default([], true) | tojson }}
+</script>
+
+
+<script type="application/json"
+        id="status-data">
+{{ status_data | default([], true) | tojson }}
+</script>
+
+
+<script type="application/json"
+        id="priority-data">
+{{ priority_data | default([], true) | tojson }}
+</script>
+
+
+<script type="application/json"
+        id="sentiment-data">
+{{ sentiment_data | default([], true) | tojson }}
+</script>
+
+
+<script type="application/json"
+        id="department-data">
+{{ department_data | default([], true) | tojson }}
+</script>
+
+
+<script type="application/json"
+        id="monthly-data">
+{{ monthly_data | default([], true) | tojson }}
+</script>
+
+
+<!-- =========================================================
+     CHART JAVASCRIPT
+========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       READ JSON DATA
+    ===================================================== */
+
+    function readJSON(id) {
+
+        const element =
+            document.getElementById(id);
+
+
+        if (!element) {
+            return [];
+        }
+
+
+        try {
+
+            const value =
+                element.textContent.trim();
+
+
+            if (!value) {
+                return [];
+            }
+
+
+            return JSON.parse(value);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "JSON Error:",
+                id,
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    const categoryData =
+        readJSON("category-data");
+
+    const statusData =
+        readJSON("status-data");
+
+    const priorityData =
+        readJSON("priority-data");
+
+    const sentimentData =
+        readJSON("sentiment-data");
+
+    const departmentData =
+        readJSON("department-data");
+
+    const monthlyData =
+        readJSON("monthly-data");
+
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function getLabels(data) {
+
+        return data.map(function (item) {
+
+            return item.label || "Unknown";
+
+        });
+
+    }
+
+
+    function getTotals(data) {
+
+        return data.map(function (item) {
+
+            return Number(item.total) || 0;
+
+        });
+
+    }
+
+
+    /* =====================================================
+       CHART.JS CHECK
+    ===================================================== */
+
+    if (typeof Chart === "undefined") {
+
+        console.error(
+            "Chart.js is not loaded."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       CATEGORY
+    ===================================================== */
+
+    const categoryCanvas =
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    if (
+        categoryCanvas &&
+        categoryData.length
+    ) {
+
+        new Chart(
+            categoryCanvas,
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels:
+                        getLabels(categoryData),
+
+                    datasets: [{
+
+                        data:
+                            getTotals(categoryData),
+
+                        backgroundColor: [
+                            "#7966f3",
+                            "#a18cf5",
+                            "#6da8ee",
+                            "#75c99a",
+                            "#f2c46d",
+                            "#e78391"
+                        ],
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "64%",
+
+                    plugins: {
+
+                        legend: {
+                            position: "bottom"
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    const statusCanvas =
+        document.getElementById(
+            "statusChart"
+        );
+
+
+    if (
+        statusCanvas &&
+        statusData.length
+    ) {
+
+        new Chart(
+            statusCanvas,
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels:
+                        getLabels(statusData),
+
+                    datasets: [{
+
+                        data:
+                            getTotals(statusData),
+
+                        backgroundColor: [
+                            "#f1c567",
+                            "#8d7bf0",
+                            "#69a9eb",
+                            "#72c89b",
+                            "#e57d88"
+                        ],
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "67%",
+
+                    plugins: {
+
+                        legend: {
+                            position: "bottom"
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PRIORITY
+    ===================================================== */
+
+    const priorityCanvas =
+        document.getElementById(
+            "priorityChart"
+        );
+
+
+    if (
+        priorityCanvas &&
+        priorityData.length
+    ) {
+
+        new Chart(
+            priorityCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        getLabels(priorityData),
+
+                    datasets: [{
+
+                        label:
+                            "Complaints",
+
+                        data:
+                            getTotals(priorityData),
+
+                        backgroundColor:
+                            "#8372ed",
+
+                        borderRadius: 7
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+                                precision: 0
+                            }
+
+                        },
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SENTIMENT
+    ===================================================== */
+
+    const sentimentCanvas =
+        document.getElementById(
+            "sentimentChart"
+        );
+
+
+    if (
+        sentimentCanvas &&
+        sentimentData.length
+    ) {
+
+        new Chart(
+            sentimentCanvas,
+            {
+
+                type: "pie",
+
+                data: {
+
+                    labels:
+                        getLabels(sentimentData),
+
+                    datasets: [{
+
+                        data:
+                            getTotals(sentimentData),
+
+                        backgroundColor: [
+                            "#75c99a",
+                            "#f2c46d",
+                            "#e78391",
+                            "#a7a8b3"
+                        ],
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            position: "bottom"
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       DEPARTMENT
+    ===================================================== */
+
+    const departmentCanvas =
+        document.getElementById(
+            "departmentChart"
+        );
+
+
+    if (
+        departmentCanvas &&
+        departmentData.length
+    ) {
+
+        new Chart(
+            departmentCanvas,
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels:
+                        getLabels(departmentData),
+
+                    datasets: [{
+
+                        label:
+                            "Complaints",
+
+                        data:
+                            getTotals(departmentData),
+
+                        backgroundColor:
+                            "#7183e8",
+
+                        borderRadius: 7
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    indexAxis: "y",
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+                                precision: 0
+                            }
+
+                        },
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MONTHLY TREND
+    ===================================================== */
+
+    const monthlyCanvas =
+        document.getElementById(
+            "monthlyChart"
+        );
+
+
+    if (
+        monthlyCanvas &&
+        monthlyData.length
+    ) {
+
+        new Chart(
+            monthlyCanvas,
+            {
+
+                type: "line",
+
+                data: {
+
+                    labels:
+                        getLabels(monthlyData),
+
+                    datasets: [{
+
+                        label:
+                            "Complaints",
+
+                        data:
+                            getTotals(monthlyData),
+
+                        borderColor:
+                            "#7a67ee",
+
+                        backgroundColor:
+                            "rgba(122,103,238,0.08)",
+
+                        fill: true,
+
+                        tension: 0.4,
+
+                        pointRadius: 4,
+
+                        pointBackgroundColor:
+                            "#7a67ee"
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+                                precision: 0
+                            }
+
+                        },
+
+                        x: {
+
+                            grid: {
+                                display: false
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    const adminSearch =
+        document.getElementById(
+            "adminSearch"
+        );
+
+
+    if (adminSearch) {
+
+        adminSearch.addEventListener(
+            "input",
+            function () {
+
+
+                const searchValue =
+                    this.value
+                        .toLowerCase()
+                        .trim();
+
+
+                const rows =
+                    document.querySelectorAll(
+                        ".complaint-search-row"
+                    );
+
+
+                rows.forEach(
+                    function (row) {
+
+
+                        const text =
+                            row.innerText
+                                .toLowerCase();
+
+
+                        const match =
+                            text.includes(
+                                searchValue
+                            );
+
+
+                        row.style.display =
+                            match
+                                ? ""
+                                : "none";
+
+
+                        if (!match) {
+
+                            const detail =
+                                row.nextElementSibling;
+
+
+                            if (
+                                detail &&
+                                detail.classList.contains(
+                                    "complaint-detail-row"
+                                )
+                            ) {
+
+                                detail.classList.remove(
+                                    "show-detail"
+                                );
+
+                            }
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+});
+
+
+/* =========================================================
+   OPEN / CLOSE COMPLAINT
+========================================================= */
+
+function toggleComplaint(id) {
+
+    const row =
+        document.getElementById(id);
+
+
+    if (!row) {
+        return;
+    }
+
+
+    row.classList.toggle(
+        "show-detail"
+    );
+
+}
+
+</script>
+
+
+<!-- =========================================================
+     MAIN JS FILE
+========================================================= -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+</body>
+
+</html>
